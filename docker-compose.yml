@@ -10,3 +10,18 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  ui:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    command: python ui.py
+    volumes:
+      - ./logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
