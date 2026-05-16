@@ -1,0 +1,34 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Iegūst kodu
+        uses: actions/checkout@v4
+
+      - name: Instalē Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalē bibliotēkas
+        run: pip install -r requirements.txt
+
+      - name: Pārbauda Python failus
+        run: |
+          python -m py_compile app/main.py
+          python -m py_compile app/ui.py
+          echo "✅ Visi Python faili ir bez kļūdām!"
+
+      - name: Pārbauda Docker failu
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
